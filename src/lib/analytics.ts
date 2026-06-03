@@ -35,11 +35,13 @@ export interface GA4Error {
 
 export type GA4Result = GA4Metrics | GA4Error;
 
-function rowValue(row: { dimensionValues?: { value?: string }[]; metricValues?: { value?: string }[] }, dimIdx: number): string {
+type SDKRow = { dimensionValues?: { value?: string | null }[] | null; metricValues?: { value?: string | null }[] | null };
+
+function rowValue(row: SDKRow, dimIdx: number): string {
   return row.dimensionValues?.[dimIdx]?.value ?? "";
 }
 
-function rowMetric(row: { dimensionValues?: { value?: string }[]; metricValues?: { value?: string }[] }, metIdx: number): number {
+function rowMetric(row: SDKRow, metIdx: number): number {
   return parseFloat(row.metricValues?.[metIdx]?.value ?? "0") || 0;
 }
 
@@ -49,7 +51,6 @@ export async function fetchGA4Data(): Promise<GA4Result> {
     const property = `properties/${propertyId}`;
 
     const today = new Date();
-    const fmt = (d: Date) => d.toISOString().slice(0, 10).replace(/-/g, "");
     const toGA = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
     const thirtyDaysAgo = new Date(today); thirtyDaysAgo.setDate(today.getDate() - 30);
@@ -99,17 +100,18 @@ export async function fetchGA4Data(): Promise<GA4Result> {
     const curRow = rows.find((r) => r.dimensionValues?.[0]?.value === "current") ?? rows[0];
     const prevRow = rows.find((r) => r.dimensionValues?.[0]?.value === "previous") ?? rows[1];
 
+    const empty: SDKRow = {};
     const cur = {
-      sessions: rowMetric(curRow ?? {}, 0),
-      users: rowMetric(curRow ?? {}, 1),
-      pageViews: rowMetric(curRow ?? {}, 2),
-      bounceRate: rowMetric(curRow ?? {}, 3),
-      avgSessionDuration: rowMetric(curRow ?? {}, 4),
+      sessions: rowMetric(curRow ?? empty, 0),
+      users: rowMetric(curRow ?? empty, 1),
+      pageViews: rowMetric(curRow ?? empty, 2),
+      bounceRate: rowMetric(curRow ?? empty, 3),
+      avgSessionDuration: rowMetric(curRow ?? empty, 4),
     };
     const prev = {
-      sessions: rowMetric(prevRow ?? {}, 0),
-      users: rowMetric(prevRow ?? {}, 1),
-      pageViews: rowMetric(prevRow ?? {}, 2),
+      sessions: rowMetric(prevRow ?? empty, 0),
+      users: rowMetric(prevRow ?? empty, 1),
+      pageViews: rowMetric(prevRow ?? empty, 2),
     };
 
     const delta = (c: number, p: number) => (p > 0 ? Math.round(((c - p) / p) * 100) : 0);
