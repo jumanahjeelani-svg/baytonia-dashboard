@@ -28,14 +28,14 @@ function BottomNav() {
   const pathname = usePathname();
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-700 z-50 md:hidden">
-      <div className="flex overflow-x-auto scrollbar-hide">
+      <div className="flex overflow-x-auto">
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href;
           return (
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center justify-center py-2 px-3 min-w-[60px] flex-1 ${
+              className={`flex flex-col items-center justify-center py-2 px-3 min-w-[60px] flex-1 transition-colors ${
                 isActive ? 'text-amber-400' : 'text-slate-400'
               }`}
             >
@@ -60,9 +60,9 @@ export default function DashboardLayout({
         <div className="hidden md:flex md:w-64 md:shrink-0 md:sticky md:top-0 md:h-screen">
           <Sidebar />
         </div>
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 w-full">
           <TopBar />
-          <main className="flex-1 p-4 md:p-6 pb-24 md:pb-6">
+          <main className="flex-1 p-3 md:p-6 pb-24 md:pb-6 w-full overflow-x-hidden">
             {children}
           </main>
         </div>
