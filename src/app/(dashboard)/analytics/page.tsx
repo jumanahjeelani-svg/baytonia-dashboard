@@ -52,7 +52,7 @@ export default async function AnalyticsPage() {
     <div className="flex flex-col flex-1 overflow-hidden">
       <TopBar title="جوجل أناليتيكس" />
       <main className="flex-1 overflow-y-auto p-6">
-        {!data.connected ? (
+      {!data.totalSessions ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center max-w-sm">
               <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
