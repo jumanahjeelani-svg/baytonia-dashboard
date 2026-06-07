@@ -14,21 +14,35 @@ export interface GA4Data {
 
 export async function fetchGA4Data(): Promise<GA4Data> {
   const apiKey = process.env.WINDSOR_AI_API_KEY;
-
   if (!apiKey) {
+    console.log('❌ WINDSOR_AI_API_KEY missing');
     return getMockData();
   }
 
   try {
     const url = `${WINDSOR_BASE}?api_key=${apiKey}&date_preset=last_30d&fields=date,active_users,sessions,purchase_revenue,ecommerce_purchases,bounce_rate,screen_page_views,default_channel_group&account_id=${ACCOUNT_ID}`;
     
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    console.log('🔄 Fetching GA4 from Windsor...');
+    
+    const res = await fetch(url, { cache: 'no-store' });
+    
+    if (!res.ok) {
+      console.log('❌ Windsor error:', res.status, res.statusText);
+      return getMockData();
+    }
+
     const json = await res.json();
+    console.log('✅ Windsor response rows:', json.data?.length || 0);
+    
     const rows = json.data || [];
+
+    if (rows.length === 0) {
+      console.log('⚠️ No data returned from Windsor');
+      return getMockData();
+    }
 
     const dailyMap: Record<string, any> = {};
     const channelMap: Record<string, any> = {};
-
     let totalSessions = 0, totalUsers = 0, totalRevenue = 0;
     let totalPurchases = 0, totalBounce = 0, totalPageViews = 0;
     let count = 0;
@@ -64,7 +78,8 @@ export async function fetchGA4Data(): Promise<GA4Data> {
       dailyData: Object.values(dailyMap).sort((a, b) => a.date.localeCompare(b.date)),
       channelData: Object.values(channelMap).sort((a, b) => b.sessions - a.sessions).slice(0, 6),
     };
-  } catch {
+  } catch (e) {
+    console.log('❌ Windsor fetch failed:', e);
     return getMockData();
   }
 }
