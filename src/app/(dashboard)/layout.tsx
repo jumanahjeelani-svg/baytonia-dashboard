@@ -95,7 +95,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Menu size={24} />
             </button>
           </div>
-          <div className="hidden md:block"><TopBar /></div>
+<div className="hidden md:block"><TopBar /></div>
           <main className="flex-1 p-4 md:p-6">{children}</main>
         </div>
       </div>
