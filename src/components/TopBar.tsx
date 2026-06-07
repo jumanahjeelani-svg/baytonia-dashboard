@@ -1,19 +1,30 @@
 "use client";
-
 import { Bell, Search, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const ranges = ["آخر 7 أيام", "آخر 30 يوم", "آخر 6 أشهر", "هذا العام"];
 
-export default function TopBar({ title }: { title: string }) {
+const pageTitles: Record<string, string> = {
+  "/dashboard": "لوحة التحكم",
+  "/instagram": "انستجرام",
+  "/tiktok": "تيك توك",
+  "/snapchat": "سناب شات",
+  "/analytics": "جوجل أناليتكس",
+  "/scheduler": "جدولة المحتوى",
+  "/chat": "المساعد الذكي",
+};
+
+export default function TopBar({ title }: { title?: string }) {
   const [range, setRange] = useState("آخر 30 يوم");
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const pageTitle = title ?? pageTitles[pathname] ?? "بيتونيا";
 
   return (
     <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
-      <h1 className="text-slate-800 font-bold text-lg">{title}</h1>
+      <h1 className="text-slate-800 font-bold text-lg">{pageTitle}</h1>
       <div className="flex items-center gap-3">
-        {/* Date range */}
         <div className="relative">
           <button
             onClick={() => setOpen(!open)}
@@ -38,13 +49,9 @@ export default function TopBar({ title }: { title: string }) {
             </div>
           )}
         </div>
-
-        {/* Search */}
         <button className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 hover:border-slate-300">
           <Search size={16} />
         </button>
-
-        {/* Notifications */}
         <button className="relative w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 hover:border-slate-300">
           <Bell size={16} />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-amber-500 rounded-full" />
