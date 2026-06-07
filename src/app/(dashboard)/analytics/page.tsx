@@ -1,13 +1,6 @@
 import TopBar from '@/components/TopBar';
 import { fetchGA4Data } from '@/lib/analytics';
-import {
-  Users,
-  Eye,
-  ShoppingCart,
-  TrendingUp,
-  Globe,
-  Clock,
-} from 'lucide-react';
+import { Users, Eye, ShoppingCart, TrendingUp, Globe, Clock } from 'lucide-react';
 
 export default async function AnalyticsPage() {
   const data = await fetchGA4Data();
@@ -25,8 +18,6 @@ export default async function AnalyticsPage() {
     <div className="flex flex-col gap-6">
       <TopBar title="جوجل أناليتيكس" />
       <main className="flex-1 p-4 md:p-6">
-
-        {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           {stats.map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
@@ -38,8 +29,6 @@ export default async function AnalyticsPage() {
             </div>
           ))}
         </div>
-
-        {/* Channel Data */}
         {data.channelData.length > 0 && (
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <h3 className="font-bold text-slate-800 mb-4">مصادر الترافيك</h3>
@@ -56,7 +45,6 @@ export default async function AnalyticsPage() {
             </div>
           </div>
         )}
-
       </main>
     </div>
   );
