@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { ChevronLeft, ChevronRight, Plus, X, Upload, Image, Film, BookOpen } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, X, Upload } from "lucide-react";
 
 type Platform = "instagram" | "tiktok" | "snapchat";
 type PostStatus = "published" | "scheduled" | "draft";
@@ -24,25 +24,18 @@ interface Post {
   shares: number;
   mediaFiles?: string[];
 }
+
 const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 const DAYS_SHORT = ["أح","اث","ثل","أر","خم","جم","سب"];
-const PLATFORM_LABEL: Record<Platform, string> = {
-  instagram: "انستغرام", tiktok: "تيك توك", snapchat: "سناب شات",
-};
-const PLATFORM_ICON: Record<Platform, string> = {
-  instagram: "📷", tiktok: "🎵", snapchat: "👻",
-};
-const STATUS_LABEL: Record<PostStatus, string> = {
-  published: "منشور", scheduled: "مجدول", draft: "مسودة",
-};
-const PLATFORM_COLOR: Record<Platform, string> = {
-  instagram: "#E1306C", tiktok: "#69C9D0", snapchat: "#E6D800",
-};
+const PLATFORM_LABEL: Record<Platform, string> = { instagram: "انستغرام", tiktok: "تيك توك", snapchat: "سناب شات" };
+const PLATFORM_ICON: Record<Platform, string> = { instagram: "📷", tiktok: "🎵", snapchat: "👻" };
+const STATUS_LABEL: Record<PostStatus, string> = { published: "منشور", scheduled: "مجدول", draft: "مسودة" };
+const PLATFORM_COLOR: Record<Platform, string> = { instagram: "#E1306C", tiktok: "#69C9D0", snapchat: "#E6D800" };
 
 const PLACEMENTS: Record<Platform, { value: Placement; label: string; icon: string; multi: boolean }[]> = {
   instagram: [
-    { value: "instagram_post",  label: "بوست",  icon: "🖼️", multi: true  },
-    { value: "instagram_reel",  label: "ريل",   icon: "🎬", multi: false },
+    { value: "instagram_post", label: "بوست", icon: "🖼️", multi: true },
+    { value: "instagram_reel", label: "ريل", icon: "🎬", multi: false },
     { value: "instagram_story", label: "ستوري", icon: "⭕", multi: false },
   ],
   tiktok: [
@@ -80,16 +73,16 @@ function platformBg(p: Platform): React.CSSProperties {
 }
 
 const INIT_POSTS: Post[] = [
-  { id: 1,  platform: "instagram", placement: "instagram_post",  date: "2026-06-01", time: "09:00", caption: "بداية جديدة لشهر يونيو! ✨", status: "published", views: 5420,  likes: 876,  comments: 123, shares: 45  },
-  { id: 2,  platform: "tiktok",    placement: "tiktok_video",    date: "2026-06-01", time: "18:00", caption: "تحدي جديد! 🎵", status: "published", views: 12500, likes: 2100, comments: 340, shares: 890 },
-  { id: 3,  platform: "snapchat",  placement: "snapchat_story",  date: "2026-06-03", time: "14:00", caption: "استوري اليوم 👀", status: "published", views: 3200,  likes: 580,  comments: 42,  shares: 15  },
-  { id: 4,  platform: "instagram", placement: "instagram_reel",  date: "2026-06-05", time: "10:00", caption: "نصائح لتحسين محتواك 📱", status: "published", views: 8100, likes: 1240, comments: 198, shares: 67 },
-  { id: 5,  platform: "tiktok",    placement: "tiktok_video",    date: "2026-06-07", time: "20:00", caption: "أحدث الترندات 🔥", status: "published", views: 28000, likes: 4500, comments: 780, shares: 2100 },
-  { id: 6,  platform: "instagram", placement: "instagram_story", date: "2026-06-08", time: "11:00", caption: "ستوري اليوم 🎨", status: "published", views: 6750, likes: 980, comments: 156, shares: 34 },
-  { id: 7,  platform: "instagram", placement: "instagram_post",  date: "2026-06-17", time: "10:00", caption: "كيفية الحصول على أول 1000 متابع 📈", status: "scheduled", views: 0, likes: 0, comments: 0, shares: 0 },
-  { id: 8,  platform: "tiktok",    placement: "tiktok_video",    date: "2026-06-18", time: "21:00", caption: "لايف مباشر اليوم! 🔴", status: "scheduled", views: 0, likes: 0, comments: 0, shares: 0 },
-  { id: 9,  platform: "instagram", placement: "instagram_reel",  date: "2026-06-20", time: "14:00", caption: "تصميم جديد 🎨", status: "draft", views: 0, likes: 0, comments: 0, shares: 0 },
-  { id: 10, platform: "snapchat",  placement: "snapchat_story",  date: "2026-06-22", time: "11:00", caption: "فلتر جديد حصري! 👻", status: "scheduled", views: 0, likes: 0, comments: 0, shares: 0 },
+  { id: 1, platform: "instagram", placement: "instagram_post", date: "2026-06-01", time: "9:00 AM", caption: "بداية جديدة لشهر يونيو! ✨", status: "published", views: 5420, likes: 876, comments: 123, shares: 45 },
+  { id: 2, platform: "tiktok", placement: "tiktok_video", date: "2026-06-01", time: "6:00 PM", caption: "تحدي جديد! 🎵", status: "published", views: 12500, likes: 2100, comments: 340, shares: 890 },
+  { id: 3, platform: "snapchat", placement: "snapchat_story", date: "2026-06-03", time: "2:00 PM", caption: "استوري اليوم 👀", status: "published", views: 3200, likes: 580, comments: 42, shares: 15 },
+  { id: 4, platform: "instagram", placement: "instagram_reel", date: "2026-06-05", time: "10:00 AM", caption: "نصائح لتحسين محتواك 📱", status: "published", views: 8100, likes: 1240, comments: 198, shares: 67 },
+  { id: 5, platform: "tiktok", placement: "tiktok_video", date: "2026-06-07", time: "8:00 PM", caption: "أحدث الترندات 🔥", status: "published", views: 28000, likes: 4500, comments: 780, shares: 2100 },
+  { id: 6, platform: "instagram", placement: "instagram_story", date: "2026-06-08", time: "11:00 AM", caption: "ستوري اليوم 🎨", status: "published", views: 6750, likes: 980, comments: 156, shares: 34 },
+  { id: 7, platform: "instagram", placement: "instagram_post", date: "2026-06-17", time: "10:00 AM", caption: "كيفية الحصول على أول 1000 متابع 📈", status: "scheduled", views: 0, likes: 0, comments: 0, shares: 0 },
+  { id: 8, platform: "tiktok", placement: "tiktok_video", date: "2026-06-18", time: "9:00 PM", caption: "لايف مباشر اليوم! 🔴", status: "scheduled", views: 0, likes: 0, comments: 0, shares: 0 },
+  { id: 9, platform: "instagram", placement: "instagram_reel", date: "2026-06-20", time: "2:00 PM", caption: "تصميم جديد 🎨", status: "draft", views: 0, likes: 0, comments: 0, shares: 0 },
+  { id: 10, platform: "snapchat", placement: "snapchat_story", date: "2026-06-22", time: "11:00 AM", caption: "فلتر جديد حصري! 👻", status: "scheduled", views: 0, likes: 0, comments: 0, shares: 0 },
 ];
 
 export default function SchedulerClient() {
@@ -106,7 +99,9 @@ export default function SchedulerClient() {
   const [newPlacement, setNewPlacement] = useState<Placement | null>(null);
   const [newCaption, setNewCaption] = useState("");
   const [newDate, setNewDate] = useState("");
-  const [newTime, setNewTime] = useState("12:00");
+  const [newHour, setNewHour] = useState("12");
+  const [newMinute, setNewMinute] = useState("00");
+  const [newAmPm, setNewAmPm] = useState<"AM" | "PM">("AM");
   const [newStatus, setNewStatus] = useState<PostStatus>("scheduled");
   const [mediaFiles, setMediaFiles] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -129,12 +124,12 @@ export default function SchedulerClient() {
     )
     .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
 
-  const totalViews    = rangePosts.reduce((s, p) => s + p.views, 0);
-  const totalLikes    = rangePosts.reduce((s, p) => s + p.likes, 0);
+  const totalViews = rangePosts.reduce((s, p) => s + p.views, 0);
+  const totalLikes = rangePosts.reduce((s, p) => s + p.likes, 0);
   const totalComments = rangePosts.reduce((s, p) => s + p.comments, 0);
-  const totalShares   = rangePosts.reduce((s, p) => s + p.shares, 0);
-  const totalEng      = totalLikes + totalComments + totalShares;
-  const engRate       = totalViews > 0 ? ((totalEng / totalViews) * 100).toFixed(1) : "0";
+  const totalShares = rangePosts.reduce((s, p) => s + p.shares, 0);
+  const totalEng = totalLikes + totalComments + totalShares;
+  const engRate = totalViews > 0 ? ((totalEng / totalViews) * 100).toFixed(1) : "0";
 
   function platStats(pl: Platform) {
     const pp = rangePosts.filter(p => p.platform === pl);
@@ -156,7 +151,9 @@ export default function SchedulerClient() {
     setNewPlacement(null);
     setNewCaption("");
     setNewDate(date ?? today);
-    setNewTime("12:00");
+    setNewHour("12");
+    setNewMinute("00");
+    setNewAmPm("AM");
     setNewStatus("scheduled");
     setMediaFiles([]);
     setShowModal(true);
@@ -177,14 +174,14 @@ export default function SchedulerClient() {
     setMediaFiles([]);
   }
 
-  function savePost() {
+  function savePost(status: PostStatus) {
     if (!newPlat) { alert("الرجاء اختيار المنصة"); return; }
     if (!newPlacement) { alert("الرجاء اختيار نوع المنشور"); return; }
     if (!newCaption.trim()) { alert("الرجاء كتابة نص المنشور"); return; }
+    const time = `${newHour}:${newMinute} ${newAmPm}`;
     setPosts(prev => [...prev, {
-      id: Date.now(), platform: newPlat!, placement: newPlacement!, date: newDate, time: newTime,
-      caption: newCaption.trim(), status: newStatus, views: 0, likes: 0, comments: 0, shares: 0,
-      mediaFiles,
+      id: Date.now(), platform: newPlat!, placement: newPlacement!, date: newDate, time,
+      caption: newCaption.trim(), status, views: 0, likes: 0, comments: 0, shares: 0, mediaFiles,
     }]);
     setShowModal(false);
   }
@@ -430,25 +427,11 @@ export default function SchedulerClient() {
               {/* Media Upload */}
               {newPlacement && (
                 <div>
-                  <label className="block text-sm font-bold mb-2 text-slate-700">
-                    {isMultiMedia ? "رفع صور (حتى 10)" : "رفع ملف"}
-                  </label>
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    className="border-2 border-dashed border-slate-200 rounded-xl p-5 flex flex-col items-center gap-2 cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition-all"
-                  >
+                  <label className="block text-sm font-bold mb-2 text-slate-700">{isMultiMedia ? "رفع صور (حتى 10)" : "رفع ملف"}</label>
+                  <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-slate-200 rounded-xl p-5 flex flex-col items-center gap-2 cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition-all">
                     <Upload size={24} className="text-slate-400" />
-                    <p className="text-xs text-slate-500 text-center">
-                      {isMultiMedia ? "اضغطي لرفع صور متعددة (JPG, PNG)" : "اضغطي لرفع صورة أو فيديو"}
-                    </p>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept={isMultiMedia ? "image/*" : "image/*,video/*"}
-                      multiple={isMultiMedia}
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
+                    <p className="text-xs text-slate-500 text-center">{isMultiMedia ? "اضغطي لرفع صور متعددة (JPG, PNG)" : "اضغطي لرفع صورة أو فيديو"}</p>
+                    <input ref={fileInputRef} type="file" accept={isMultiMedia ? "image/*" : "image/*,video/*"} multiple={isMultiMedia} onChange={handleFileChange} className="hidden" />
                   </div>
                   {mediaFiles.length > 0 && (
                     <div className="flex gap-2 flex-wrap mt-2">
@@ -477,30 +460,43 @@ export default function SchedulerClient() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold mb-2 text-slate-700">الوقت</label>
-<select value={newTime} onChange={e => setNewTime(e.target.value)} className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400">
-  {Array.from({ length: 24 }, (_, i) => {
-    const hour = i % 12 === 0 ? 12 : i % 12;
-    const ampm = i < 12 ? "AM" : "PM";
-    const value = `${String(i).padStart(2, "0")}:00`;
-    return <option key={i} value={value}>{hour}:00 {ampm}</option>;
-  })}
-</select>                </div>
-              </div>
-
-              {/* Status */}
-              <div>
-                <label className="block text-sm font-bold mb-2 text-slate-700">الحالة</label>
-                <select value={newStatus} onChange={e => setNewStatus(e.target.value as PostStatus)} className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400">
-                  <option value="scheduled">مجدول</option>
-                  <option value="draft">مسودة</option>
-                  <option value="published">منشور</option>
-                </select>
+                  <div className="flex gap-1" style={{ direction: "ltr" }}>
+                    <input
+                      type="text"
+                      placeholder="12"
+                      maxLength={2}
+                      value={newHour}
+                      onChange={e => setNewHour(e.target.value.replace(/\D/g, ""))}
+                      className="w-12 px-2 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400 text-center"
+                    />
+                    <span className="flex items-center text-slate-400 font-bold">:</span>
+                    <input
+                      type="text"
+                      placeholder="00"
+                      maxLength={2}
+                      value={newMinute}
+                      onChange={e => setNewMinute(e.target.value.replace(/\D/g, ""))}
+                      className="w-12 px-2 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400 text-center"
+                    />
+                    <select
+                      value={newAmPm}
+                      onChange={e => setNewAmPm(e.target.value as "AM" | "PM")}
+                      className="flex-1 px-2 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400"
+                    >
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex gap-2.5 justify-end px-6 py-4 border-t border-slate-100">
-              <button onClick={() => setShowModal(false)} className="px-5 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition-colors">إلغاء</button>
-              <button onClick={savePost} className="px-5 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors">حفظ المنشور</button>
+            {/* Footer - نشر الآن + جدولة + مسودة */}
+            <div className="flex gap-2 justify-end px-6 py-4 border-t border-slate-100">
+              <button onClick={() => setShowModal(false)} className="px-4 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition-colors">إلغاء</button>
+              <button onClick={() => savePost("draft")} className="px-4 py-2.5 rounded-lg bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200 transition-colors">مسودة</button>
+              <button onClick={() => savePost("scheduled")} className="px-4 py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors">جدولة 📅</button>
+              <button onClick={() => savePost("published")} className="px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors">نشر الآن ✨</button>
             </div>
           </div>
         </div>
