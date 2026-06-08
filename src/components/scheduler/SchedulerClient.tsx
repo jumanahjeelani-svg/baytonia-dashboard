@@ -24,10 +24,8 @@ interface Post {
   shares: number;
   mediaFiles?: string[];
 }
-
-const MONTHS = ["يناير"Fارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 const DAYS_SHORT = ["أح","اث","ثل","أر","خم","جم","سب"];
-
 const PLATFORM_LABEL: Record<Platform, string> = {
   instagram: "انستغرام", tiktok: "تيك توك", snapchat: "سناب شات",
 };
