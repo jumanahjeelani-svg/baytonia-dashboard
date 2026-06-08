@@ -25,7 +25,7 @@ interface Post {
   mediaFiles?: string[];
 }
 
-const MONTHS = ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
+const MONTHS = ["يناير"Fارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 const DAYS_SHORT = ["أح","اث","ثل","أر","خم","جم","سب"];
 
 const PLATFORM_LABEL: Record<Platform, string> = {
@@ -479,8 +479,14 @@ export default function SchedulerClient() {
                 </div>
                 <div>
                   <label className="block text-sm font-bold mb-2 text-slate-700">الوقت</label>
-                  <input type="time" value={newTime} onChange={e => setNewTime(e.target.value)} className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400" style={{ direction: "ltr" }} />
-                </div>
+<select value={newTime} onChange={e => setNewTime(e.target.value)} className="w-full px-3 py-2.5 border border-slate-200 rounded-lg text-sm bg-slate-50 focus:outline-none focus:border-indigo-400">
+  {Array.from({ length: 24 }, (_, i) => {
+    const hour = i % 12 === 0 ? 12 : i % 12;
+    const ampm = i < 12 ? "AM" : "PM";
+    const value = `${String(i).padStart(2, "0")}:00`;
+    return <option key={i} value={value}>{hour}:00 {ampm}</option>;
+  })}
+</select>                </div>
               </div>
 
               {/* Status */}
