@@ -106,7 +106,7 @@ export async function fetchInstagramData(): Promise<IGResult> {
         { next: { revalidate: 300 } }
       ),
       fetch(
-        `${BASE}/${igId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,like_count,comments_count,timestamp&limit=12&access_token=${pageToken}`,
+        `${BASE}/${igId}/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,like_count,comments_count,timestamp&limit=100&access_token=${pageToken}`,
         { next: { revalidate: 300 } }
       ),
       fetch(
